@@ -1,3 +1,5 @@
+import { Request, Response } from "express";
+
 const STATUS_CODE = Object.freeze({
     OK: 200,
 	CREATED: 201,
@@ -22,39 +24,39 @@ const STATUS_TEXT = Object.freeze({
 	SERVER_ERROR: "Internal Server Error",
 });
 
-function okResponse(res, text = STATUS_TEXT.OK) {
+function okResponse(res: Response, text: string = STATUS_TEXT.OK) {
     return res.status(STATUS_CODE.OK).send(text);
 }
 
-function createdResponse(res, text = STATUS_TEXT.CREATED) {
+function createdResponse(res: Response, text: string = STATUS_TEXT.CREATED) {
     return res.status(STATUS_CODE.CREATED).send(text);
 }
 
-function movedPermanentlyResponse(res, text = STATUS_TEXT.MOVED_PERMANENTLY) {
+function movedPermanentlyResponse(res: Response, text: string = STATUS_TEXT.MOVED_PERMANENTLY) {
     return res.status(STATUS_CODE.MOVED_PERMANENTLY).send(text);
 }
 
-function badRequestResponse(res, text = STATUS_TEXT.BAD_REQUEST) {
+function badRequestResponse(res: Response, text: string = STATUS_TEXT.BAD_REQUEST) {
     return res.status(STATUS_CODE.BAD_REQUEST).send(text);
 }
 
-function unauthorizedResponse(res, text = STATUS_TEXT.UNAUTHORIZED) {
+function unauthorizedResponse(res: Response, text: string = STATUS_TEXT.UNAUTHORIZED) {
     return res.status(STATUS_CODE.UNAUTHORIZED).send(text);
 }
 
-function notFoundResponse(res, text = STATUS_TEXT.NOT_FOUND) {
+function notFoundResponse(res: Response, text: string = STATUS_TEXT.NOT_FOUND) {
     return res.status(STATUS_CODE.NOT_FOUND).send(text);
 }
 
-function conflictResponse(res, text = STATUS_TEXT.CONFLICT) {
+function conflictResponse(res: Response, text: string = STATUS_TEXT.CONFLICT) {
     return res.status(STATUS_CODE.CONFLICT).send(text);
 }
 
-function unprocessableEntityResponse(res, text = STATUS_TEXT.UNPROCESSABLE_ENTITY) {
+function unprocessableEntityResponse(res: Response, text: string = STATUS_TEXT.UNPROCESSABLE_ENTITY) {
     return res.status(STATUS_CODE.UNPROCESSABLE_ENTITY).send(text);
 }
 
-function serverErrorResponse(res, error, text = STATUS_TEXT.SERVER_ERROR) {
+function serverErrorResponse(res: Response, error: any, text: string = STATUS_TEXT.SERVER_ERROR) {
     console.error(error);
     return res.status(STATUS_CODE.SERVER_ERROR).send(text);
 }
