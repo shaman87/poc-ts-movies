@@ -18,8 +18,12 @@ async function insertMovie({ name, platform, genre }: Movie): Promise<QueryResul
     );
 }
 
+async function updateMovieById(id: number, watched: boolean): Promise<QueryResult<MovieEntity>> {
+    return connection.query(`UPDATE movies SET watched = $1 WHERE id = $2;`, [watched, id]);
+}
+
 async function deleteMovieById(id: number): Promise<QueryResult<MovieEntity>> {
     return connection.query(`DELETE FROM movies WHERE id = $1;`, [id]);
 }
 
-export { getMoviesList, getMovieById, insertMovie, deleteMovieById };
+export { getMoviesList, getMovieById, insertMovie, updateMovieById, deleteMovieById };

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { Movie } from "../protocols/Movie.js";
-import { deleteMovieById, getMovieById, getMoviesList, insertMovie } from "../repositories/movies.repositories.js"
+import { deleteMovieById, getMovieById, getMoviesList, insertMovie, updateMovieById } from "../repositories/movies.repositories.js"
 import { movieSchema } from "../schemas/movies.schemas.js";
-import { createdResponse, noContentResponse, notFoundResponse, serverErrorResponse, unprocessableEntityResponse } from "./helper.controllers.js";
+import { createdResponse, noContentResponse, notFoundResponse, okResponse, serverErrorResponse, unprocessableEntityResponse } from "./helper.controllers.js";
 
 async function readMoviesList(req: Request, res: Response) {
     try {
@@ -25,9 +25,7 @@ async function readMovie(req: Request, res: Response) {
     try {
         const movie = (await getMovieById(Number(id))).rows[0];
 
-        if(!movie) {
-            return notFoundResponse(res);
-        }
+        if(!movie) return notFoundResponse(res);
 
         movie.createdAt = movie.createdAt.toLocaleString().substring(0, 10);
 
@@ -57,11 +55,28 @@ async function createMovie(req: Request, res: Response) {
     }
 }
 
+async function updateMovie(req: Request, res: Response) {
+    const { id } = req.params;
+
+    try {
+        const movie = (await getMovieById(Number(id))).rows[0];
+
+        if(!movie) return notFoundResponse(res);
+
+        await updateMovieById(movie.id, !movie.watched);
+
+        return okResponse(res);
+
+    } catch(error) {
+        return serverErrorResponse(res, error);
+    }
+}
+
 async function deleteMovie(req: Request, res: Response) {
     const { id } = req.params;
 
     try {
-        const movie = (await (deleteMovieById(Number(id)))).rows[0];
+        const movie = (await deleteMovieById(Number(id))).rows[0];
 
         if(!movie) {
             return notFoundResponse(res);
@@ -74,4 +89,4 @@ async function deleteMovie(req: Request, res: Response) {
     }
 }
 
-export { readMoviesList, readMovie, createMovie, deleteMovie };
+export { readMoviesList, readMovie, createMovie, updateMovie, deleteMovie };
