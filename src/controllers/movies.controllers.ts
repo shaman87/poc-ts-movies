@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Movie } from "../protocols/Movie.js";
-import { getMoviesById, getMoviesList, insertMovie } from "../repositories/movies.repositories.js"
+import { getMovieById, getMoviesList, insertMovie } from "../repositories/movies.repositories.js"
 import { movieSchema } from "../schemas/movies.schemas.js";
 import { createdResponse, serverErrorResponse, unprocessableEntityResponse } from "./helper.controllers.js";
 
@@ -23,7 +23,7 @@ async function readMovie(req: Request, res: Response) {
     const { id } = req.params;
 
     try {
-        const movie = (await getMoviesById(Number(id))).rows[0];
+        const movie = (await getMovieById(Number(id))).rows[0];
 
         movie.createdAt = movie.createdAt.toLocaleString().substring(0, 10);
 
