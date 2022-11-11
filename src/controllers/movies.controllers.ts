@@ -1,13 +1,15 @@
 import { Request, Response } from "express";
-import { getMoviesList } from "../repositories/movies.repositories.js"
-import { serverErrorResponse } from "./helper.controllers.js";
+import { Movie } from "../protocols/Movie.js";
+import { getMoviesList, insertMovie } from "../repositories/movies.repositories.js"
+import { movieSchema } from "../schemas/movies.schemas.js";
+import { createdResponse, serverErrorResponse, unprocessableEntityResponse } from "./helper.controllers.js";
 
 async function readMoviesList(req: Request, res: Response) {
     try {
         const moviesList = (await getMoviesList()).rows;
 
         moviesList.forEach(movie => {
-            movie.createdAt = movie.createdAt.toISOString().substring(0, 10);
+            movie.createdAt = movie.createdAt.toLocaleString().substring(0, 10);
         });
 
         return res.send(moviesList);
@@ -17,4 +19,23 @@ async function readMoviesList(req: Request, res: Response) {
     }
 }
 
-export { readMoviesList };
+async function createMovie(req: Request, res: Response) {
+    const { name, platform, genre } = req.body as Movie;
+    const validation = movieSchema.validate({ name, platform, genre }, { abortEarly: false });
+
+    if(validation.error) {
+        const errorList = validation.error.details.map(error => error.message);
+        return unprocessableEntityResponse(res).send(errorList);
+    }
+
+    try {
+        await insertMovie({ name, platform, genre });
+
+        return createdResponse(res);
+
+    } catch(error) {
+        return serverErrorResponse(res, error);
+    }
+}
+
+export { readMoviesList, createMovie };
