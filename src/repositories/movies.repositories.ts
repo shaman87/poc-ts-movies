@@ -7,6 +7,10 @@ async function getMoviesList(): Promise<QueryResult<MovieEntity>> {
     return connection.query(`SELECT * FROM movies;`);
 }
 
+async function getMoviesById(id: number): Promise<QueryResult<MovieEntity>> {
+    return connection.query(`SELECT * FROM movies WHERE id = $1;`, [id]);
+}
+
 async function insertMovie({ name, platform, genre }: Movie): Promise<QueryResult<NewMovie>> {
     return connection.query(`
         INSERT INTO movies (name, platform, genre) VALUES ($1, $2, $3);
@@ -14,4 +18,4 @@ async function insertMovie({ name, platform, genre }: Movie): Promise<QueryResul
     );
 }
 
-export { getMoviesList, insertMovie };
+export { getMoviesList, getMoviesById, insertMovie };

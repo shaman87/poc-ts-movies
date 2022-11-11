@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Movie } from "../protocols/Movie.js";
-import { getMoviesList, insertMovie } from "../repositories/movies.repositories.js"
+import { getMoviesById, getMoviesList, insertMovie } from "../repositories/movies.repositories.js"
 import { movieSchema } from "../schemas/movies.schemas.js";
 import { createdResponse, serverErrorResponse, unprocessableEntityResponse } from "./helper.controllers.js";
 
@@ -13,6 +13,21 @@ async function readMoviesList(req: Request, res: Response) {
         });
 
         return res.send(moviesList);
+
+    } catch(error) {
+        return serverErrorResponse(res, error);
+    }
+}
+
+async function readMovie(req: Request, res: Response) {
+    const { id } = req.params;
+
+    try {
+        const movie = (await getMoviesById(Number(id))).rows[0];
+
+        movie.createdAt = movie.createdAt.toLocaleString().substring(0, 10);
+
+        return res.send(movie);
 
     } catch(error) {
         return serverErrorResponse(res, error);
@@ -38,4 +53,4 @@ async function createMovie(req: Request, res: Response) {
     }
 }
 
-export { readMoviesList, createMovie };
+export { readMoviesList, readMovie, createMovie };
