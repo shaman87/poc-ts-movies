@@ -53,4 +53,4 @@ async function createMovie(req: Request, res: Response) {
     }
 }
 
-export { readMoviesList, readMovie, createMovie }
+export { readMoviesList, readMovie, createMovie };
