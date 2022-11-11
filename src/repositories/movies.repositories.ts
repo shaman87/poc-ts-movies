@@ -18,4 +18,8 @@ async function insertMovie({ name, platform, genre }: Movie): Promise<QueryResul
     );
 }
 
-export { getMoviesList, getMovieById, insertMovie };
+async function deleteMovieById(id: number): Promise<QueryResult<MovieEntity>> {
+    return connection.query(`DELETE FROM movies WHERE id = $1;`, [id]);
+}
+
+export { getMoviesList, getMovieById, insertMovie, deleteMovieById };

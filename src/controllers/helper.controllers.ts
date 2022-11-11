@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 const STATUS_CODE = Object.freeze({
     OK: 200,
 	CREATED: 201,
+	NO_CONTENT: 204,
 	MOVED_PERMANENTLY: 301,
 	BAD_REQUEST: 400,
 	UNAUTHORIZED: 401,
@@ -15,6 +16,7 @@ const STATUS_CODE = Object.freeze({
 const STATUS_TEXT = Object.freeze({
 	OK: "Ok",
 	CREATED: "Created",
+	NO_CONTENT: "No Content",
 	MOVED_PERMANENTLY: "Moved Permanently",
 	BAD_REQUEST: "Bad Request",
 	UNAUTHORIZED: "Unauthorized",
@@ -30,6 +32,10 @@ function okResponse(res: Response, text: string = STATUS_TEXT.OK) {
 
 function createdResponse(res: Response, text: string = STATUS_TEXT.CREATED) {
     return res.status(STATUS_CODE.CREATED).send(text);
+}
+
+function noContentResponse(res: Response, text: string = STATUS_TEXT.NO_CONTENT) {
+    return res.status(STATUS_CODE.NO_CONTENT).send(text);
 }
 
 function movedPermanentlyResponse(res: Response, text: string = STATUS_TEXT.MOVED_PERMANENTLY) {
@@ -64,6 +70,7 @@ function serverErrorResponse(res: Response, error: any, text: string = STATUS_TE
 export {
 	okResponse,
 	createdResponse,
+	noContentResponse,
 	movedPermanentlyResponse,
 	badRequestResponse,
 	unauthorizedResponse,
