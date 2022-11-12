@@ -7,6 +7,12 @@ async function getMoviesList(): Promise<QueryResult<MovieEntity>> {
     return connection.query(`SELECT * FROM movies;`);
 }
 
+async function getMoviesCountByPlatform(): Promise<QueryResult<MovieEntity>> {
+    return connection.query(`
+        SELECT platform, COUNT(platform) FROM movies GROUP BY platform ORDER BY count DESC;
+    `);
+}
+
 async function getMovieById(id: number): Promise<QueryResult<MovieEntity>> {
     return connection.query(`SELECT * FROM movies WHERE id = $1;`, [id]);
 }
@@ -26,4 +32,4 @@ async function deleteMovieById(id: number): Promise<QueryResult<MovieEntity>> {
     return connection.query(`DELETE FROM movies WHERE id = $1;`, [id]);
 }
 
-export { getMoviesList, getMovieById, insertMovie, updateMovieById, deleteMovieById };
+export { getMoviesList, getMoviesCountByPlatform, getMovieById, insertMovie, updateMovieById, deleteMovieById };

@@ -23,7 +23,7 @@ const STATUS_TEXT = Object.freeze({
 	NOT_FOUND: "Not Found",
 	CONFLICT: "Conflict",
 	UNPROCESSABLE_ENTITY: "Unprocessable Entity",
-	SERVER_ERROR: "Internal Server Error",
+	SERVER_ERROR: "Internal Server Error"
 });
 
 function okResponse(res: Response, text: string = STATUS_TEXT.OK) {
@@ -58,7 +58,7 @@ function conflictResponse(res: Response, text: string = STATUS_TEXT.CONFLICT) {
     return res.status(STATUS_CODE.CONFLICT).send(text);
 }
 
-function unprocessableEntityResponse(res: Response, text: string = STATUS_TEXT.UNPROCESSABLE_ENTITY) {
+function unprocessableEntityResponse(res: Response, text: string | string[] = STATUS_TEXT.UNPROCESSABLE_ENTITY) {
     return res.status(STATUS_CODE.UNPROCESSABLE_ENTITY).send(text);
 }
 
